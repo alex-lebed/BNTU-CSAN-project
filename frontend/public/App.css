@@ -1,0 +1,11 @@
+body {
+  height: 100vh;
+  margin: 0px;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
