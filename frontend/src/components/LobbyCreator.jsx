@@ -69,6 +69,11 @@ const LobbyCreator = props => {
     }));
     if (value !== "") {
       validateField(name, value);
+    } else {
+      setErrors(prev => ({
+        ...prev,
+        [name]: false
+      }));
     }
   }
 
@@ -82,7 +87,7 @@ const LobbyCreator = props => {
         break;
       }
       case "questionsAmount": {
-        if (value < 1 || value > 100) {
+        if (value < 1 || value > totalQuestionsAmount) {
           valid = false;
         }
         break;
@@ -128,7 +133,9 @@ const LobbyCreator = props => {
         name="questionsAmount"
         onChange={handleChange}
         helperText={
-          errors.questionsAmount ? "Неверное кол-во вопросов (1-100)" : ""
+          errors.questionsAmount
+            ? "Неверное кол-во вопросов (1-" + totalQuestionsAmount + ")"
+            : ""
         }
         fullWidth
         size="small"

@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router";
 import Header from "./components/Header";
 import Lobby from "./components/lobby/Lobby";
+import LobbyCreator from "./components/LobbyCreator";
 import { BrowserRouter } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
 
@@ -21,6 +22,7 @@ const App = () => {
         <Header />
         <Switch>
           <Route exact path="/lobby" component={Lobby} />
+          <Route exact path="/admin" component={LobbyCreator} />
         </Switch>
       </BrowserRouter>
     </main>
