@@ -44,7 +44,7 @@ public class LobbyPool {
                 WRITE_LOCK.lock();
                 lobbies.add(lobby);
             } finally {
-                WRITE_LOCK.lock();
+                WRITE_LOCK.unlock();
             }
         }
     }
