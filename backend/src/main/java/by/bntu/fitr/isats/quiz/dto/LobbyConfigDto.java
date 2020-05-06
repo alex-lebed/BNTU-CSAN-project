@@ -1,11 +1,9 @@
 package by.bntu.fitr.isats.quiz.dto;
 
 import by.bntu.fitr.isats.quiz.entity.user.Admin;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -15,8 +13,6 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 public class LobbyConfigDto {
 
     @NotNull

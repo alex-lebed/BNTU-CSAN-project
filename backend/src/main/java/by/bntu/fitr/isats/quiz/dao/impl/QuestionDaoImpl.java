@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class QuestionDaoImpl implements QuestionDao {
+public class QuestionDaoImpl extends AbstractDao<Question> implements QuestionDao {
 
     private String GET_QUESTIONS_AMOUNT_QUERY = QueryFileReader.getQuery("get_questions_amount.sql");
     private String GET_RANDOM_QUESTIONS_QUERY = QueryFileReader.getQuery("get_random_questions.sql");
@@ -20,19 +20,18 @@ public class QuestionDaoImpl implements QuestionDao {
 
     @Autowired
     public QuestionDaoImpl(JdbcTemplate jdbcTemplate, RowMapper<Question> mapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.mapper = mapper;
+        super(jdbcTemplate, mapper);
     }
 
     @Override
     public int getQuestionsAmount() {
-        // queryForObject() does not throw NPE
-        return jdbcTemplate.queryForObject(GET_QUESTIONS_AMOUNT_QUERY, Integer.class);
+        var jdbcTemplate = getJdbcTemplate();
+        return jdbcTemplate.queryForObject(GET_QUESTIONS_AMOUNT_QUERY, Integer.class); // does not throw NPE
     }
 
     @Override
     public List<Question> getRandomQuestions(int amount) {
-        return jdbcTemplate.query(GET_RANDOM_QUESTIONS_QUERY, new Object[]{amount}, mapper);
+        return queryList(GET_RANDOM_QUESTIONS_QUERY, amount);
     }
 
 }

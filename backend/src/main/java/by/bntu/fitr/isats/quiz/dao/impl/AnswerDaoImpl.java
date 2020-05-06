@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class AnswerDaoImpl implements AnswerDao {
+public class AnswerDaoImpl extends AbstractDao<Answer> implements AnswerDao {
 
     private static final String GET_BY_QUESTION_ID_QUERY = QueryFileReader.getQuery("get_answers_for_question.sql");
 
@@ -19,13 +19,12 @@ public class AnswerDaoImpl implements AnswerDao {
 
     @Autowired
     public AnswerDaoImpl(JdbcTemplate jdbcTemplate, RowMapper<Answer> mapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.mapper = mapper;
+        super(jdbcTemplate, mapper);
     }
 
     @Override
     public List<Answer> getByQuestionId(int id) {
-        return jdbcTemplate.query(GET_BY_QUESTION_ID_QUERY, new Object[]{ id }, mapper);
+        return queryList(GET_BY_QUESTION_ID_QUERY, id);
     }
 
 }

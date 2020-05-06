@@ -18,6 +18,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     public QuestionServiceImpl(QuestionDao questionDao, AnswerDao answerDao) {
         this.questionDao = questionDao;
+        this.answerDao = answerDao;
     }
 
     @Override

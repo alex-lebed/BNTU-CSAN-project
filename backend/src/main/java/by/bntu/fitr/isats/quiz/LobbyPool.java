@@ -27,7 +27,7 @@ public class LobbyPool {
         return INSTANCE;
     }
 
-    public Optional<Lobby> getById(long id) {
+    public Optional<Lobby> getById(int id) {
         try {
             READ_LOCK.lock();
             return lobbies.stream()

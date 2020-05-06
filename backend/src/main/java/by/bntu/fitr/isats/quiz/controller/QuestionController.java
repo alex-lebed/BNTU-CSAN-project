@@ -1,6 +1,5 @@
 package by.bntu.fitr.isats.quiz.controller;
 
-import by.bntu.fitr.isats.quiz.dto.QuestionDto;
 import by.bntu.fitr.isats.quiz.service.api.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
