@@ -1,5 +1,6 @@
 import Actions from "./Constants";
-import { QuestionService, LobbyService, PlayerService } from "../service";
+import { QuestionService, PlayerService } from "../service";
+import { connectToLobby as connectToLobbyService, createLobby as createLobbyService} from "../service/LobbyService";
 
 export const getTotalQuestionsAmount = () => {
   return (dispatch) => {
@@ -14,7 +15,7 @@ export const getTotalQuestionsAmount = () => {
 
 export const createLobby = (lobby) => {
   return (dispatch) => {
-    LobbyService.createLobby(lobby).then((response) => {
+    createLobbyService(lobby).then((response) => {
       return dispatch({
         type: Actions.CREATE_LOBBY,
         payload: response.data,
@@ -23,11 +24,11 @@ export const createLobby = (lobby) => {
   };
 };
 
-export const getCurrentLobby = () => {
+export const connectToLobby = (username, lobbyPassword) => {
   return (dispatch) => {
-    LobbyService.getCurrentLobby().then((response) => {
+    connectToLobbyService(username, lobbyPassword).then((response) => {
       return dispatch({
-        type: Actions.GET_CURRENT_LOBBY,
+        type: Actions.CONNECT_TO_LOBBY,
         payload: response.data,
       });
     });
@@ -43,4 +44,4 @@ export const getWinners = () => {
       });
     });
   };
-}
+};
