@@ -1,3 +1,5 @@
 {
-    "totalQuestionsAmount": 0
+    "totalQuestionsAmount": 0,
+    "lobby": null,
+    "winners": []
 }
