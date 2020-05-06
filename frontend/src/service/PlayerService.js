@@ -1,15 +1,11 @@
+import axios from 'axios';
+
 export const PlayerService = {
   getWinners,
 };
 
+const PLAYERS_URL = "/players";
+
 function getWinners() {
-  //TODO REST request
-  return new Promise((resolve, reject) =>
-    resolve({
-      data: [
-        { id: 2, name: "Alex", winsAmount: 3 },
-        { id: 5, name: "Misha", winsAmount: 2 },
-      ],
-    })
-  );
+  return axios.get(PLAYERS_URL + '/winners');
 }

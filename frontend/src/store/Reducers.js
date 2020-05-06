@@ -9,17 +9,10 @@ export const totalQuestionsAmount = (state = 0, action) => {
 };
 
 export const lobby = (state = null, action) => {
-  switch (action.type) {
-    //case Actions.GET_CURRENT_LOBBY: {
-    //  return action.payload;
-    //}
-    case Actions.CREATE_LOBBY: {
-      return action.payload;
-    }
-    default: {
-      return state;
-    }
+  if (action.type === Actions.CREATE_LOBBY) {
+    return action.payload;
   }
+  return state;
 };
 
 export const winners = (state = [], action) => {

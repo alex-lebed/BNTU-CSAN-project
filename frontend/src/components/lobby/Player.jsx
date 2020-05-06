@@ -15,7 +15,7 @@ const Player = props => {
 };
 
 Player.propTypes = {
-  classes: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired
 };
 
