@@ -15,7 +15,7 @@ const Question = props => {
 };
 
 Question.propTypes = {
-  classes: PropTypes.array.isRequired
+  classes: PropTypes.object.isRequired
 };
 
 export default Question;

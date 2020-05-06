@@ -36,7 +36,7 @@ const AnswersBox = props => {
 };
 
 AnswersBox.propTypes = {
-  classes: PropTypes.array.isRequired
+  classes: PropTypes.object.isRequired
 };
 
 export default AnswersBox;

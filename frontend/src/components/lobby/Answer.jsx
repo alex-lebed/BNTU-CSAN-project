@@ -12,7 +12,7 @@ const Answers = props => {
 };
 
 Answers.propTypes = {
-  classes: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,
   text: PropTypes.string.isRequired
 };
 

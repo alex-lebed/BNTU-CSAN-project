@@ -16,7 +16,7 @@ const QuizBox = props => {
 };
 
 QuizBox.propTypes = {
-  classes: PropTypes.array.isRequired
+  classes: PropTypes.object.isRequired
 };
 
 export default QuizBox;
