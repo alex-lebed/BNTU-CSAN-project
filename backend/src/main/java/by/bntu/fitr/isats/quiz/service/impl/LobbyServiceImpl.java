@@ -5,6 +5,7 @@ import by.bntu.fitr.isats.quiz.dao.api.AdminDao;
 import by.bntu.fitr.isats.quiz.dao.api.QuestionDao;
 import by.bntu.fitr.isats.quiz.dto.LobbyConfigDto;
 import by.bntu.fitr.isats.quiz.dto.LobbyDto;
+import by.bntu.fitr.isats.quiz.dto.PlayerConnectDto;
 import by.bntu.fitr.isats.quiz.entity.user.Admin;
 import by.bntu.fitr.isats.quiz.entity.game.GameStatus;
 import by.bntu.fitr.isats.quiz.entity.game.Lobby;
@@ -23,6 +24,8 @@ import java.util.List;
 public class LobbyServiceImpl implements LobbyService {
 
     private static final int INITIAL_QUESTION_INDEX = 0;
+    private static final int FIRST_PLAYER_ID = 0;
+    private static final int INITIAL_PLAYER_SCORE = 0;
 
     private ModelMapper mapper;
     private QuestionDao questionDao;
@@ -43,9 +46,18 @@ public class LobbyServiceImpl implements LobbyService {
         return mapper.map(lobby, LobbyDto.class);
     }
 
+    @Override
+    public LobbyDto connectPlayer(PlayerConnectDto dto) throws ServiceException {
+        Lobby lobby = getLobby(dto);
+        Player player = createPlayer(dto, lobby);
+        lobby.getPlayers()
+                .add(player);
+        return mapper.map(lobby, LobbyDto.class);
+    }
+
     private Lobby generateLobby(LobbyConfigDto config) throws ServiceException {
         return Lobby.builder()
-                .id(generateId())
+                .id(LobbyPool.getInstance().generateId())
                 .admin(getAdmin(config))
                 .password(config.getPassword())
                 .players(createListForPlayers(config))
@@ -56,9 +68,21 @@ public class LobbyServiceImpl implements LobbyService {
                 .build();
     }
 
-    private int generateId() {
-        return LobbyPool.getInstance()
-                .generateId();
+    private Lobby getLobby(PlayerConnectDto dto) throws EntityNotFoundException {
+        int id = dto.getLobbyId();
+        LobbyPool pool = LobbyPool.getInstance();
+        return pool.getById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Lobby not found by id: " + id));
+    }
+
+    private Player createPlayer(PlayerConnectDto dto, Lobby lobby) {
+        int id = lobby.getPlayers()
+                .stream()
+                .mapToInt(p -> p.getId() + 1)
+                .max()
+                .orElse(FIRST_PLAYER_ID);
+        String name = dto.getName();
+        return new Player(id, name, INITIAL_PLAYER_SCORE);
     }
 
     private Admin getAdmin(LobbyConfigDto config) throws EntityNotFoundException {
