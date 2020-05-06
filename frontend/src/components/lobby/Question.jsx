@@ -7,7 +7,7 @@ const Question = props => {
 
   return (
     <Box elevation={7} className={classes.questionsBox} component={Paper}>
-      <Typography className={classes.question}>
+      <Typography className={classes.question} align="center">
         Самый старый факультет БНТУ?
       </Typography>
     </Box>
