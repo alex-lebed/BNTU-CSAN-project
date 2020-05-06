@@ -5,10 +5,22 @@ import thunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import initialState from "./store/initialState";
+import data from "./store/initialState";
 import rootReducer from "./store/Reducers";
 
-const store = createStore(rootReducer, initialState, applyMiddleware(thunk));
+const initialState = localStorage["redux-store"]
+  ? JSON.parse(localStorage["redux-store"])
+  : data;
+
+const saveState = () => {
+  localStorage["redux-store"] = JSON.stringify(store.getState());
+};
+
+const store = applyMiddleware(thunk)(createStore)(rootReducer, initialState);
+store.subscribe(saveState);
+
+window.React = React;
+window.store = store;
 
 ReactDOM.render(
   <Provider store={store}>
