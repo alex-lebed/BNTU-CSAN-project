@@ -1,10 +1,11 @@
 import React from "react";
-import { Switch, Route } from "react-router";
+import { Router, Switch, Route } from "react-router";
 import Header from "./components/Header";
 import Lobby from "./components/lobby/Lobby";
 import LobbyCreator from "./components/LobbyCreator";
-import { BrowserRouter } from "react-router-dom";
+import WinnersTable from "./components/WinnersTable";
 import { makeStyles } from "@material-ui/styles";
+import { history } from "./helpers";
 
 const useStyles = makeStyles({
   root: {
@@ -12,19 +13,20 @@ const useStyles = makeStyles({
     margin: "0px",
     padding: 0
   }
-})
+});
 
 const App = () => {
   const classes = useStyles();
   return (
     <main className={classes.root}>
-      <BrowserRouter>
+      <Router history={history}>
         <Header />
         <Switch>
           <Route exact path="/lobby" component={Lobby} />
           <Route exact path="/admin" component={LobbyCreator} />
+          <Route exact path="/winners" component={WinnersTable} />
         </Switch>
-      </BrowserRouter>
+      </Router>
     </main>
   );
 };
