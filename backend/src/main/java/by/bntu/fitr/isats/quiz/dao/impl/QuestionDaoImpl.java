@@ -26,11 +26,8 @@ public class QuestionDaoImpl implements QuestionDao {
 
     @Override
     public int getQuestionsAmount() {
-        Integer result = jdbcTemplate.queryForObject(GET_QUESTIONS_AMOUNT_QUERY, Integer.class);
-        if (result == null) {
-            throw new IllegalStateException("Get questions amount query returned null instead of int");
-        }
-        return result;
+        // queryForObject() does not throw NPE
+        return jdbcTemplate.queryForObject(GET_QUESTIONS_AMOUNT_QUERY, Integer.class);
     }
 
     @Override

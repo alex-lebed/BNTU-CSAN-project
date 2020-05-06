@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class LobbyServiceImpl implements LobbyService {
 
-    private static final int INITIAL_CURRENT_QUESTION_INDEX = 0;
+    private static final int INITIAL_QUESTION_INDEX = 0;
 
     private ModelMapper mapper;
     private QuestionDao questionDao;
@@ -37,26 +37,26 @@ public class LobbyServiceImpl implements LobbyService {
 
     @Override
     public LobbyDto createLobby(LobbyConfigDto dto) throws ServiceException {
-        Lobby lobby = getLobby(dto);
+        Lobby lobby = generateLobby(dto);
         LobbyPool pool = LobbyPool.getInstance();
         pool.addLobby(lobby);
         return mapper.map(lobby, LobbyDto.class);
     }
 
-    private Lobby getLobby(LobbyConfigDto config) throws ServiceException {
+    private Lobby generateLobby(LobbyConfigDto config) throws ServiceException {
         return Lobby.builder()
-                .id(getId())
+                .id(generateId())
                 .admin(getAdmin(config))
                 .password(config.getPassword())
-                .players(getPlayers(config))
+                .players(createListForPlayers(config))
                 .playersAmountToStart(config.getPlayersAmountToStart())
-                .questions(getQuestions(config))
-                .currentQuestionIndex(INITIAL_CURRENT_QUESTION_INDEX)
+                .questions(getRandomQuestions(config))
+                .currentQuestionIndex(INITIAL_QUESTION_INDEX)
                 .status(GameStatus.WAITING_PLAYERS)
                 .build();
     }
 
-    private int getId() {
+    private int generateId() {
         return LobbyPool.getInstance()
                 .generateId();
     }
@@ -69,12 +69,12 @@ public class LobbyServiceImpl implements LobbyService {
                 .orElseThrow(() -> new EntityNotFoundException("Admin not found (or password incorrect): " + login));
     }
 
-    private List<Player> getPlayers(LobbyConfigDto config) {
+    private List<Player> createListForPlayers(LobbyConfigDto config) {
         int size = config.getPlayersAmountToStart();
         return new ArrayList<>(size);
     }
 
-    private List<Question> getQuestions(LobbyConfigDto config) {
+    private List<Question> getRandomQuestions(LobbyConfigDto config) {
         int amount = config.getQuestionsAmount();
         return questionDao.getRandomQuestions(amount);
     }

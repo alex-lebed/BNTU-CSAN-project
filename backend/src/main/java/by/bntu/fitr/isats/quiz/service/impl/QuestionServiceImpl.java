@@ -1,6 +1,8 @@
 package by.bntu.fitr.isats.quiz.service.impl;
 
+import by.bntu.fitr.isats.quiz.dao.api.AnswerDao;
 import by.bntu.fitr.isats.quiz.dao.api.QuestionDao;
+import by.bntu.fitr.isats.quiz.entity.question.Answer;
 import by.bntu.fitr.isats.quiz.entity.question.Question;
 import by.bntu.fitr.isats.quiz.service.api.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,10 @@ import java.util.List;
 public class QuestionServiceImpl implements QuestionService {
 
     private QuestionDao questionDao;
+    private AnswerDao answerDao;
 
     @Autowired
-    public QuestionServiceImpl(QuestionDao questionDao) {
+    public QuestionServiceImpl(QuestionDao questionDao, AnswerDao answerDao) {
         this.questionDao = questionDao;
     }
 
@@ -24,6 +27,10 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<Question> getRandomQuestions(int amount) {
+        List<Question> questions = questionDao.getRandomQuestions(amount);
+        questions.forEach(
+                q -> q.setAnswers(answerDao.getByQuestionId(q.getId()))
+        );
         return questionDao.getRandomQuestions(amount);
     }
 

@@ -9,9 +9,14 @@ import java.sql.SQLException;
 @Component
 public class QuestionRowMapper implements RowMapper<Question> {
 
+    private static final String ID = "id";
+    private static final String TEXT = "question_text";
+
     @Override
     public Question mapRow(ResultSet resultSet, int i) throws SQLException {
-        return null;
+        int id = resultSet.getInt(ID);
+        String text = resultSet.getString(TEXT);
+        return new Question(id, text);
     }
 
 }

@@ -13,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class Answer {
 
+    private Integer id;
     private String text;
     private boolean correct;
 
