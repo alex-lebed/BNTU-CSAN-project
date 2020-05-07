@@ -1,6 +1,9 @@
 import Actions from "./Constants";
 import { QuestionService, PlayerService } from "../service";
-import { connectToLobby as connectToLobbyService, createLobby as createLobbyService} from "../service/LobbyService";
+import {
+  connectToLobby as connectToLobbyService,
+  createLobby as createLobbyService,
+} from "../service/LobbyService";
 
 export const getTotalQuestionsAmount = () => {
   return (dispatch) => {
@@ -32,6 +35,13 @@ export const connectToLobby = (username, lobbyPassword) => {
         payload: response.data,
       });
     });
+  };
+};
+
+export const updateLobby = (lobby) => {
+  return {
+    type: Actions.UPDATE_LOBBY,
+    payload: lobby,
   };
 };
 

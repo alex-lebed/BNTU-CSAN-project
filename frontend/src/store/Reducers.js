@@ -1,5 +1,6 @@
 import Actions from "./Constants";
 import { combineReducers } from "redux";
+import { emit } from "../SocketClient";
 
 export const totalQuestionsAmount = (state = 0, action) => {
   if (action.type === Actions.GET_TOTAL_QUESTIONS_AMOUNT) {
@@ -9,8 +10,10 @@ export const totalQuestionsAmount = (state = 0, action) => {
 };
 
 export const lobby = (state = null, action) => {
-  console.log('reducers');
   if (action.type === Actions.CREATE_LOBBY || action.type === Actions.CONNECT_TO_LOBBY) {
+    emit("event:connect", action.payload);
+    return action.payload;
+  } else if (action.type === Actions.UPDATE_LOBBY) {
     return action.payload;
   }
   return state;
