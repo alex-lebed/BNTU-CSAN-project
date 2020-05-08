@@ -14,9 +14,6 @@ public class AdminDaoImpl extends AbstractDao<Admin> implements AdminDao {
 
     private static final String GET_ADMIN_QUERY = QueryFileReader.getQuery("get_admin.sql");
 
-    private JdbcTemplate jdbcTemplate;
-    private RowMapper<Admin> mapper;
-
     @Autowired
     public AdminDaoImpl(JdbcTemplate jdbcTemplate, RowMapper<Admin> mapper) {
         super(jdbcTemplate, mapper);

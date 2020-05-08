@@ -15,9 +15,6 @@ public class QuestionDaoImpl extends AbstractDao<Question> implements QuestionDa
     private String GET_QUESTIONS_AMOUNT_QUERY = QueryFileReader.getQuery("get_questions_amount.sql");
     private String GET_RANDOM_QUESTIONS_QUERY = QueryFileReader.getQuery("get_random_questions.sql");
 
-    private JdbcTemplate jdbcTemplate;
-    private RowMapper<Question> mapper;
-
     @Autowired
     public QuestionDaoImpl(JdbcTemplate jdbcTemplate, RowMapper<Question> mapper) {
         super(jdbcTemplate, mapper);

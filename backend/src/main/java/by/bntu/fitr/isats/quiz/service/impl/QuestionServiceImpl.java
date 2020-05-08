@@ -32,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
         questions.forEach(
                 q -> q.setAnswers(answerDao.getByQuestionId(q.getId()))
         );
-        return questionDao.getRandomQuestions(amount);
+        return questions;
     }
 
 }
