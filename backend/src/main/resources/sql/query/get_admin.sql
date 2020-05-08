@@ -2,6 +2,6 @@ SELECT
   login,
   admin_password,
   admin_name
-FROM admin
+FROM quiz_admin
 WHERE
-  login=?
+  login=? AND admin_password=?;

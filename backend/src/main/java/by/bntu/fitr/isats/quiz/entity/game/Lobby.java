@@ -13,6 +13,7 @@ import lombok.ToString;
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor // TODO remove
 @Getter
 @Setter
 @EqualsAndHashCode

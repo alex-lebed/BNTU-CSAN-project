@@ -2,7 +2,6 @@ package by.bntu.fitr.isats.quiz.service.impl;
 
 import by.bntu.fitr.isats.quiz.LobbyPool;
 import by.bntu.fitr.isats.quiz.dao.api.AdminDao;
-import by.bntu.fitr.isats.quiz.dao.api.QuestionDao;
 import by.bntu.fitr.isats.quiz.dto.LobbyConfigDto;
 import by.bntu.fitr.isats.quiz.dto.LobbyDto;
 import by.bntu.fitr.isats.quiz.dto.PlayerConnectDto;
@@ -14,6 +13,7 @@ import by.bntu.fitr.isats.quiz.entity.question.Question;
 import by.bntu.fitr.isats.quiz.exception.EntityNotFoundException;
 import by.bntu.fitr.isats.quiz.exception.ServiceException;
 import by.bntu.fitr.isats.quiz.service.api.LobbyService;
+import by.bntu.fitr.isats.quiz.service.api.QuestionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,14 +28,14 @@ public class LobbyServiceImpl implements LobbyService {
     private static final int INITIAL_PLAYER_SCORE = 0;
 
     private ModelMapper mapper;
-    private QuestionDao questionDao;
     private AdminDao adminDao;
+    private QuestionService questionService;
 
     @Autowired
-    public LobbyServiceImpl(ModelMapper mapper, QuestionDao questionDao, AdminDao adminDao) {
+    public LobbyServiceImpl(ModelMapper mapper, AdminDao adminDao, QuestionService questionService) {
         this.mapper = mapper;
-        this.questionDao = questionDao;
         this.adminDao = adminDao;
+        this.questionService = questionService;
     }
 
     @Override
@@ -49,10 +49,31 @@ public class LobbyServiceImpl implements LobbyService {
     @Override
     public LobbyDto connectPlayer(PlayerConnectDto dto) throws ServiceException {
         Lobby lobby = getLobby(dto);
-        Player player = createPlayer(dto, lobby);
-        lobby.getPlayers()
-                .add(player);
-        return mapper.map(lobby, LobbyDto.class);
+        synchronized (lobby) {
+            String lobbyPassword = lobby.getPassword();
+            String submittedPassword = dto.getLobbyPassword();
+            if (!lobbyPassword.equals(submittedPassword)) {
+                throw new ServiceException(
+                        "Invalid password: " + submittedPassword +
+                        ", player name: " + dto.getName() +
+                        ", lobby id: " + lobby.getId()
+                );
+            }
+
+            if (lobby.getStatus() != GameStatus.WAITING_PLAYERS) {
+                throw new ServiceException("Can't connect player to lobby, game status: " + lobby.getStatus());
+            }
+
+            Player player = createPlayer(dto, lobby);
+            List<Player> players = lobby.getPlayers();
+            players.add(player);
+
+            if (players.size() == lobby.getPlayersAmountToStart()) {
+                lobby.setStatus(GameStatus.STARTED);
+            }
+
+            return mapper.map(lobby, LobbyDto.class);
+        }
     }
 
     private Lobby generateLobby(LobbyConfigDto config) throws ServiceException {
@@ -100,7 +121,7 @@ public class LobbyServiceImpl implements LobbyService {
 
     private List<Question> getRandomQuestions(LobbyConfigDto config) {
         int amount = config.getQuestionsAmount();
-        return questionDao.getRandomQuestions(amount);
+        return questionService.getRandomQuestions(amount);
     }
 
 }
