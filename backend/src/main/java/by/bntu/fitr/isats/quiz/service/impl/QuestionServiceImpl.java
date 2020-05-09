@@ -2,7 +2,6 @@ package by.bntu.fitr.isats.quiz.service.impl;
 
 import by.bntu.fitr.isats.quiz.dao.api.AnswerDao;
 import by.bntu.fitr.isats.quiz.dao.api.QuestionDao;
-import by.bntu.fitr.isats.quiz.entity.question.Answer;
 import by.bntu.fitr.isats.quiz.entity.question.Question;
 import by.bntu.fitr.isats.quiz.service.api.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,6 +3,7 @@ package by.bntu.fitr.isats.quiz.entity.game;
 import by.bntu.fitr.isats.quiz.entity.question.Question;
 import by.bntu.fitr.isats.quiz.entity.user.Admin;
 import by.bntu.fitr.isats.quiz.entity.user.Player;
+import by.bntu.fitr.isats.quiz.entity.user.Winner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -13,7 +14,7 @@ import lombok.ToString;
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor // TODO remove
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -29,5 +30,6 @@ public class Lobby {
     private List<Question> questions;
     private int currentQuestionIndex;
     private GameStatus status;
+    private List<Winner> winners;
 
 }

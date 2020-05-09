@@ -5,23 +5,28 @@ import by.bntu.fitr.isats.quiz.entity.user.Winner;
 import by.bntu.fitr.isats.quiz.utils.QueryFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
-public class WinnerDaoImpl extends AbstractDao<Winner> implements WinnerDao {
+public class WinnerDaoImpl implements WinnerDao {
 
-    private static final String GET_WINNERS_QUERY = QueryFileReader.getQuery("get_winners.sql");
+    private static final String SAVE_QUERY = QueryFileReader.getQuery("save_winner.sql");
+
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public WinnerDaoImpl(JdbcTemplate jdbcTemplate, RowMapper<Winner> mapper) {
-        super(jdbcTemplate, mapper);
+    public WinnerDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public List<Winner> getWinners(int limit) {
-        return queryList(GET_WINNERS_QUERY, limit);
+    public void save(Winner winner) {
+        Object[] params = {
+                winner.getTimestamp(),
+                winner.getPlayerName(),
+                winner.getScore()
+        };
+        jdbcTemplate.update(SAVE_QUERY, params);
     }
 
 }
