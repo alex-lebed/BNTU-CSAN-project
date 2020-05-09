@@ -5,18 +5,20 @@ import Question from "./Question";
 import AnswersBox from "./AnswersBox";
 
 const QuizBox = props => {
-  const { classes } = props;
+  const { classes, question, answers } = props;
 
   return (
     <Box className={classes.quizBox}>
-      <Question classes={classes} />
-      <AnswersBox classes={classes} />
+      <Question classes={classes} question={question}/>
+      <AnswersBox classes={classes} answers={answers}/>
     </Box>
   );
 };
 
 QuizBox.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  question: PropTypes.object.isRequired,
+  answers: PropTypes.array.isRequired
 };
 
 export default QuizBox;

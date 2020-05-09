@@ -1,5 +1,5 @@
 import Actions from "./Constants";
-import { QuestionService, PlayerService } from "../service";
+import { QuestionService, WinnerService } from "../service";
 import {
   connectToLobby as connectToLobbyService,
   createLobby as createLobbyService,
@@ -47,11 +47,20 @@ export const updateLobby = (lobby) => {
 
 export const getWinners = () => {
   return (dispatch) => {
-    PlayerService.getWinners().then((response) => {
+    WinnerService.getWinners().then((response) => {
       return dispatch({
         type: Actions.GET_WINNERS,
         payload: response.data,
       });
     });
   };
+};
+
+export const setAnswerPossibility = (value) => {
+  return (dispatch) => {
+    dispatch({
+      type: Actions.SET_ANSWER_POSSIBILITY, 
+      payload: value
+    })
+  }
 };

@@ -1,5 +1,6 @@
 {
     "totalQuestionsAmount": 0,
     "lobby": null,
-    "winners": []
+    "winners": [],
+    "answerPossibility": true
 }

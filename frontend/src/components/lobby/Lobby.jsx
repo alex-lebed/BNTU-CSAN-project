@@ -1,35 +1,44 @@
-import React, { useEffect } from "react";
-import Box from "@material-ui/core/Box";
+import React from "react";
+import { connect } from "react-redux";
+import { Box, Typography, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PlayersBox from "./PlayersBox";
 import QuizBox from "./QuizBox";
+import Colors from "../../Colors";
 
 const useStyles = makeStyles({
   root: {
     width: "50%",
     height: "100%",
-    margin: "0 auto"
+    margin: "0 auto",
+  },
+  nullLobbyRoot: {
+    width: "50%",
+    height: "100%",
+    margin: "0 auto",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   playersBox: {
     width: "100%",
     height: "30%",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   quizBox: {
     width: "80%",
     height: "70%",
     maxHeight: "70%",
     paddingTop: 50,
-    margin: "0 auto"
+    margin: "0 auto",
   },
   questionsBox: {
     height: "40%",
     margin: "0 auto",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   answersBox: {
     marginTop: "4%",
@@ -38,12 +47,16 @@ const useStyles = makeStyles({
       width: "80%",
       margin: "0 auto",
       height: "100%",
-      tableLayout: "fixed"
+      tableLayout: "fixed",
     },
     "& td": {
       maxWidth: "50%",
-      height: 100
-    }
+      height: 100,
+    },
+  },
+  question: {
+    fontFamily: "Comic Sans MS",
+    fontSize: 20,
   },
   answer: {
     width: "90%",
@@ -51,34 +64,97 @@ const useStyles = makeStyles({
     height: "83%",
     textTransform: "none"
   },
-  question: {
-    fontFamily: "Comic Sans MS",
-    fontSize: 20
+  buttonRed: {
+    backgroundColor: Colors.RED
+  },
+  buttonGreen: {
+    backgroundColor: Colors.GREEN
+  },
+  buttonGrey: {
+    backgroundColor: Colors.GREY
   },
   playerBox: {
-    marginTop: 50,
-    height: "60%",
-    width: "15%",
-    textAlign: "center"
+    marginTop: 75,
+    height: "75%",
+    width: "20%",
+    textAlign: "center",
   },
   avatar: {
     margin: "3% 20%",
     height: "60%",
-    width: "60%"
-  }
+    width: "60%",
+  },
+  nullOrWaitLobby: {
+    padding: 20,
+    fontFamily: "Comic Sans MS",
+  },
+  waitingPlayersBox: {
+    width: "50%",
+    margin: "20% auto",
+  },
 });
 
-const Lobby = () => {
+const Lobby = (props) => {
   const classes = useStyles();
+  const { lobby } = props;
 
-  useEffect(() => {});
-
-  return (
-    <Box className={classes.root}>
-      <PlayersBox classes={classes} />
-      <QuizBox classes={classes} />
-    </Box>
-  );
+  if (lobby === null) {
+    return (
+      <Box className={classes.nullLobbyRoot}>
+        <Box elevation={7} component={Paper}>
+          <Typography
+            className={classes.nullOrWaitLobby}
+            variant="h6"
+            align="center"
+          >
+            Лобби еще не создано!
+          </Typography>
+        </Box>
+      </Box>
+    );
+  } else if (lobby.status === "WAITING_PLAYERS") {
+    return (
+      <Box className={classes.root}>
+        <PlayersBox
+          classes={classes}
+          playersAmountToStart={lobby.playersAmountToStart}
+          players={lobby.players}
+        />
+        <Box
+          className={classes.waitingPlayersBox}
+          elevation={7}
+          component={Paper}
+        >
+          <Typography
+            className={classes.nullOrWaitLobby}
+            variant="h6"
+            align="center"
+          >
+            Ожидание игроков...
+          </Typography>
+        </Box>
+      </Box>
+    );
+  } else {
+    return (
+      <Box className={classes.root}>
+        <PlayersBox
+          classes={classes}
+          playersAmountToStart={lobby.playersAmountToStart}
+          players={lobby.players}
+        />
+        <QuizBox
+          classes={classes}
+          question={lobby.questions[lobby.currentQuestionIndex]}
+          answers={lobby.questions[lobby.currentQuestionIndex].answers}
+        />
+      </Box>
+    );
+  }
 };
 
-export default Lobby;
+const mapStateToProps = (state) => ({
+  lobby: state.lobby,
+});
+
+export default connect(mapStateToProps, null)(Lobby);

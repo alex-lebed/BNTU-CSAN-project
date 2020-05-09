@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 import Answer from "./Answer";
 
-const AnswersBox = props => {
-  const { classes } = props;
+const AnswersBox = (props) => {
+  const { classes, answers } = props;
 
   return (
     <Box className={classes.answersBox}>
@@ -12,21 +12,18 @@ const AnswersBox = props => {
         <tbody>
           <tr>
             <td>
-              <Answer
-                classes={classes}
-                text={"Информационных технологий и робототехники"}
-              />
+              <Answer classes={classes} answer={answers[0]} />
             </td>
             <td>
-              <Answer classes={classes} text={"Автотракторный"} />
+              <Answer classes={classes} answer={answers[1]} />
             </td>
           </tr>
           <tr>
             <td>
-              <Answer classes={classes} text={"Строительный"} />
+              <Answer classes={classes} answer={answers[2]} />
             </td>
             <td>
-              <Answer classes={classes} text={"Энергетический"} />
+              <Answer classes={classes} answer={answers[3]} />
             </td>
           </tr>
         </tbody>
@@ -36,7 +33,8 @@ const AnswersBox = props => {
 };
 
 AnswersBox.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  answers: PropTypes.array.isRequired,
 };
 
 export default AnswersBox;

@@ -1,19 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "@material-ui/core";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { setAnswerPossibility } from "../../store/Actions";
 
-const Answers = props => {
-  const { classes, text } = props;
+const Answer = (props) => {
+  const { classes, answer, answerPossibility, setAnswerPossibility } = props;
+  const [correct, setCorrect] = useState(undefined);
+
+  function checkAnswer() {
+    if (!answerPossibility) {
+      return;
+    }
+    setCorrect(answer.correct);
+    setAnswerPossibility(false);
+  }
+
+  function getColorByCorrectness() {
+    if(correct === undefined) {
+      return classes.buttonGrey;
+    } else if(correct) {
+      return classes.buttonGreen;
+    } else {
+      return classes.buttonRed;
+    }
+  }
+
   return (
-    <Button variant="contained" className={classes.answer}>
-      {text}
+    <Button
+      variant="contained"
+      className={`${classes.answer} ${getColorByCorrectness()}`}
+      onClick={() => checkAnswer(answer)}
+    >
+      {answer.text}
     </Button>
   );
 };
 
-Answers.propTypes = {
-  classes: PropTypes.object.isRequired,
-  text: PropTypes.string.isRequired
+Answer.propTypes = {
+  classes: PropTypes.array.isRequired,
+  answer: PropTypes.object.isRequired,
+  answerPossibility: PropTypes.bool.isRequired,
+  setAnswerPossibility: PropTypes.func.isRequired,
 };
 
-export default Answers;
+const mapStateToProps = (state) => ({
+  answerPossibility: state.answerPossibility,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ setAnswerPossibility }, dispatch);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Answer);
