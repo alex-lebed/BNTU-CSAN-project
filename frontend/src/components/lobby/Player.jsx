@@ -17,7 +17,7 @@ const Player = (props) => {
 Player.propTypes = {
   classes: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
+  score: PropTypes.string.isRequired,
 };
 
 export default Player;

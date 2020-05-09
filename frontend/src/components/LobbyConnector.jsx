@@ -65,12 +65,14 @@ const LobbyConnector = (props) => {
       ...prev,
       [name]: value,
     }));
+    let valid = true;
     if (value === "") {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: true,
-      }));
+      valid = false;
     }
+    setErrors((prev) => ({
+      ...prev,
+      [name]: !valid,
+    }));
   }
 
   function submitForm() {
