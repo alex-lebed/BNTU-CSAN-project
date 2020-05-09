@@ -1,8 +1,8 @@
 package by.bntu.fitr.isats.quiz.service.impl;
 
-import by.bntu.fitr.isats.quiz.dao.api.WinnerDao;
-import by.bntu.fitr.isats.quiz.dto.WinnerDto;
-import by.bntu.fitr.isats.quiz.service.api.WinnerService;
+import by.bntu.fitr.isats.quiz.dao.api.LeaderDao;
+import by.bntu.fitr.isats.quiz.dto.LeaderDto;
+import by.bntu.fitr.isats.quiz.service.api.LeaderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,22 +10,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class WinnerServiceImpl implements WinnerService {
+public class LeaderServiceImpl implements LeaderService {
 
     private ModelMapper mapper;
-    private WinnerDao dao;
+    private LeaderDao dao;
 
     @Autowired
-    public WinnerServiceImpl(ModelMapper mapper, WinnerDao dao) {
+    public LeaderServiceImpl(ModelMapper mapper, LeaderDao dao) {
         this.mapper = mapper;
         this.dao = dao;
     }
 
     @Override
-    public List<WinnerDto> getWinners(int limit) {
-        return dao.getWinners(limit)
+    public List<LeaderDto> getLeaders(int limit) {
+        return dao.getLeaders(limit)
                 .stream()
-                .map(w -> mapper.map(w, WinnerDto.class))
+                .map(w -> mapper.map(w, LeaderDto.class))
                 .collect(Collectors.toList());
     }
 
