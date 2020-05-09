@@ -120,7 +120,6 @@ public class LobbyServiceImpl implements LobbyService {
 
     private Lobby generateLobby(LobbyConfigDto config) throws ServiceException {
         return Lobby.builder()
-                .id(LobbyPool.getInstance().generateId())
                 .admin(getAdmin(config))
                 .password(config.getPassword())
                 .players(createListForPlayers(config))
