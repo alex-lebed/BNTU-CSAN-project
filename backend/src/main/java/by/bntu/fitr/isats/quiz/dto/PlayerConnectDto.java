@@ -10,7 +10,6 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class PlayerConnectDto {
 
-    private int lobbyId;
     private String lobbyPassword;
     @NotEmpty
     private String name;

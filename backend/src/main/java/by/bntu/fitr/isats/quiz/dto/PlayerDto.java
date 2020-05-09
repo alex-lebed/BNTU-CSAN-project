@@ -7,9 +7,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class AnswerDto {
+public class PlayerDto {
 
-    private String text;
-    private boolean valid;
+    private Integer id;
+    private String name;
+    private int score;
 
 }

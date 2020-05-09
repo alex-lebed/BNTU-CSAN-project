@@ -1,9 +1,7 @@
 package by.bntu.fitr.isats.quiz.dto;
 
-import by.bntu.fitr.isats.quiz.entity.user.Admin;
 import by.bntu.fitr.isats.quiz.entity.game.GameStatus;
-import by.bntu.fitr.isats.quiz.entity.question.Question;
-import by.bntu.fitr.isats.quiz.entity.user.Player;
+import by.bntu.fitr.isats.quiz.entity.user.Winner;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,12 +13,13 @@ import java.util.List;
 public class LobbyDto {
 
     private Integer id;
-    private Admin admin;
+    private AdminDto admin;
     private String password;
-    private List<Player> players;
+    private List<PlayerDto> players;
     private int playersAmountToStart;
-    private List<Question> questions;
+    private List<QuestionDto> questions;
     private int currentQuestionIndex;
     private GameStatus status;
+    private List<PlayerDto> winners;
 
 }
