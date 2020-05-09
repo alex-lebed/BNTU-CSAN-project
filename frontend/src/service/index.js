@@ -1,3 +1,3 @@
 export * from "./QuestionService";
 export * from "./LobbyService";
-export * from "./PlayerService";
+export * from "./WinnerService";

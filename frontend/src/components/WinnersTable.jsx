@@ -40,14 +40,16 @@ const WinnersTable = (props) => {
         <TableHead>
           <TableCell key="id">№</TableCell>
           <TableCell key="name">Имя</TableCell>
-          <TableCell key="wins">Количество побед</TableCell>
+          <TableCell key="wins">Победы</TableCell>
+          <TableCell key="score">Очки</TableCell>
         </TableHead>
         <TableBody>
           {winners.map((winner, index) => (
             <TableRow key={winner.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{winner.name}</TableCell>
-              <TableCell>{winner.winsAmount}</TableCell>
+              <TableCell>{winner.gamesWon}</TableCell>
+              <TableCell>{winner.score}</TableCell>
             </TableRow>
           ))}
         </TableBody>
