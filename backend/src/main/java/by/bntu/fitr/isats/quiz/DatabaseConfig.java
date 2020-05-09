@@ -1,4 +1,4 @@
-package by.bntu.fitr.isats.quiz.config;
+package by.bntu.fitr.isats.quiz;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

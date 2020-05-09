@@ -1,6 +1,5 @@
 package by.bntu.fitr.isats.quiz;
 
-import by.bntu.fitr.isats.quiz.config.DatabaseConfig;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
