@@ -1,5 +1,5 @@
 import Actions from "./Constants";
-import { QuestionService, WinnerService } from "../service";
+import { QuestionService, LeaderService } from "../service";
 import {
   connectToLobby as connectToLobbyService,
   createLobby as createLobbyService,
@@ -30,10 +30,12 @@ export const createLobby = (lobby) => {
 export const connectToLobby = (username, lobbyPassword) => {
   return (dispatch) => {
     connectToLobbyService(username, lobbyPassword).then((response) => {
-      return dispatch({
+      dispatch({
         type: Actions.CONNECT_TO_LOBBY,
         payload: response.data,
       });
+      dispatch(setCurrentPlayer(response.data.players[response.data.players.length - 1]));
+      dispatch(setCurrentQuestionAnswered(false));
     });
   };
 };
@@ -45,22 +47,40 @@ export const updateLobby = (lobby) => {
   };
 };
 
-export const getWinners = () => {
+export const getLeaders = () => {
   return (dispatch) => {
-    WinnerService.getWinners().then((response) => {
+    LeaderService.getLeaders().then((response) => {
       return dispatch({
-        type: Actions.GET_WINNERS,
+        type: Actions.GET_LEADERS,
         payload: response.data,
       });
     });
   };
 };
 
-export const setAnswerPossibility = (value) => {
+export const setCurrentQuestionAnswered = (value) => {
   return (dispatch) => {
     dispatch({
-      type: Actions.SET_ANSWER_POSSIBILITY, 
-      payload: value
-    })
-  }
+      type: Actions.SET_CURRENT_QUESTION_ANSWERED,
+      payload: value,
+    });
+  };
 };
+
+export const setCurrentPlayer = (player) => {
+  return (dispatch) => {
+    dispatch({
+      type: Actions.SET_CURRENT_PLAYER,
+      payload: player,
+    });
+  };
+};
+
+export const setPressedAnswer = (answer) => {
+  return (dispatch) => {
+    dispatch({
+      type: Actions.SET_PRESSED_ANSWER,
+      payload: answer,
+    });
+  };
+}

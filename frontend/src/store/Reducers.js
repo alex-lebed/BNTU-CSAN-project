@@ -10,11 +10,10 @@ export const totalQuestionsAmount = (state = 0, action) => {
 };
 
 export const lobby = (state = null, action) => {
-  if (
-    action.type === Actions.CREATE_LOBBY ||
-    action.type === Actions.CONNECT_TO_LOBBY
-  ) {
+  if (action.type === Actions.CONNECT_TO_LOBBY) {
     emit("event:connect", action.payload);
+    return action.payload;
+  } else if (action.type === Actions.CREATE_LOBBY) {
     return action.payload;
   } else if (action.type === Actions.UPDATE_LOBBY) {
     return action.payload;
@@ -22,15 +21,29 @@ export const lobby = (state = null, action) => {
   return state;
 };
 
-export const winners = (state = [], action) => {
-  if (action.type === Actions.GET_WINNERS) {
+export const leaders = (state = [], action) => {
+  if (action.type === Actions.GET_LEADERS) {
     return action.payload;
   }
   return state;
 };
 
-export const answerPossibility = (state = true, action) => {
-  if (action.type === Actions.SET_ANSWER_POSSIBILITY) {
+export const currentQuestionAnswered = (state = false, action) => {
+  if (action.type === Actions.SET_CURRENT_QUESTION_ANSWERED) {
+    return action.payload;
+  }
+  return state;
+};
+
+export const currentPlayer = (state = null, action) => {
+  if (action.type === Actions.SET_CURRENT_PLAYER) {
+    return action.payload;
+  }
+  return state;
+};
+
+export const pressedAnswer = (state = null, action) => {
+  if (action.type === Actions.SET_PRESSED_ANSWER) {
     return action.payload;
   }
   return state;
@@ -39,6 +52,8 @@ export const answerPossibility = (state = true, action) => {
 export default combineReducers({
   totalQuestionsAmount,
   lobby,
-  winners,
-  answerPossibility,
+  leaders,
+  currentQuestionAnswered,
+  currentPlayer,
+  pressedAnswer
 });

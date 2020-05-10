@@ -1,29 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { setAnswerPossibility } from "../../store/Actions";
+import {
+  setCurrentQuestionAnswered,
+  setPressedAnswer,
+} from "../../store/Actions";
+import { emit } from "../../SocketClient";
 
 const Answer = (props) => {
-  const { classes, answer, answerPossibility, setAnswerPossibility } = props;
-  const [correct, setCorrect] = useState(undefined);
+  const {
+    classes,
+    answer,
+    currentQuestionAnswered,
+    setCurrentQuestionAnswered,
+    currentPlayer,
+    pressedAnswer,
+    setPressedAnswer,
+  } = props;
 
   function checkAnswer() {
-    if (!answerPossibility) {
+    if (currentQuestionAnswered) {
       return;
     }
-    setCorrect(answer.correct);
-    setAnswerPossibility(false);
+    setPressedAnswer(answer);
+    setCurrentQuestionAnswered(true);
+    if (answer.correct) {
+      emit("event:answer", currentPlayer.id);
+    }
   }
 
   function getColorByCorrectness() {
-    if(correct === undefined) {
+    if (!currentQuestionAnswered) {
       return classes.buttonGrey;
-    } else if(correct) {
+    } else if (pressedAnswer === answer) {
+      return answer.correct ? classes.buttonGreen : classes.buttonRed;
+    } else if (currentQuestionAnswered && answer.correct) {
       return classes.buttonGreen;
-    } else {
-      return classes.buttonRed;
     }
   }
 
@@ -31,7 +45,7 @@ const Answer = (props) => {
     <Button
       variant="contained"
       className={`${classes.answer} ${getColorByCorrectness()}`}
-      onClick={() => checkAnswer(answer)}
+      onClick={() => checkAnswer()}
     >
       {answer.text}
     </Button>
@@ -39,18 +53,25 @@ const Answer = (props) => {
 };
 
 Answer.propTypes = {
-  classes: PropTypes.array.isRequired,
+  classes: PropTypes.object.isRequired,
   answer: PropTypes.object.isRequired,
-  answerPossibility: PropTypes.bool.isRequired,
-  setAnswerPossibility: PropTypes.func.isRequired,
+  currentQuestionAnswered: PropTypes.bool.isRequired,
+  setCurrentQuestionAnswered: PropTypes.func.isRequired,
+  pressedAnswer: PropTypes.object.isRequired,
+  setPressedAnswer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  answerPossibility: state.answerPossibility,
+  currentQuestionAnswered: state.currentQuestionAnswered,
+  currentPlayer: state.currentPlayer,
+  pressedAnswer: state.pressedAnswer,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ setAnswerPossibility }, dispatch);
+  return bindActionCreators(
+    { setCurrentQuestionAnswered, setPressedAnswer },
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Answer);
