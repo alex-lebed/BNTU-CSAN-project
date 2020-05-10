@@ -9,6 +9,7 @@ import Colors from "../../Colors";
 const useStyles = makeStyles({
   root: {
     width: "50%",
+    minWidth: 500,
     height: "100%",
     margin: "0 auto",
   },
@@ -62,27 +63,33 @@ const useStyles = makeStyles({
     width: "90%",
     marginLeft: "10%",
     height: "83%",
-    textTransform: "none"
+    textTransform: "none",
   },
   buttonRed: {
-    backgroundColor: Colors.RED
+    backgroundColor: Colors.RED,
   },
   buttonGreen: {
-    backgroundColor: Colors.GREEN
+    backgroundColor: Colors.GREEN,
   },
   buttonGrey: {
-    backgroundColor: Colors.GREY
+    backgroundColor: Colors.GREY,
   },
   playerBox: {
-    marginTop: 75,
-    height: "75%",
+    marginTop: 60,
+    paddingBottom: 10,
+    height: "80%",
     width: "20%",
+    minWidth: 100,
+    minHeight: 170,
     textAlign: "center",
   },
+  winnerBorder: {
+    border: "4px solid " + Colors.GREEN
+  },
   avatar: {
-    margin: "3% 20%",
-    height: "60%",
-    width: "60%",
+    margin: "3% 15%",
+    height: "70%",
+    width: "70%"
   },
   nullOrWaitLobby: {
     padding: 20,
@@ -135,7 +142,7 @@ const Lobby = (props) => {
         </Box>
       </Box>
     );
-  } else {
+  } else if (lobby.status === "STARTED") {
     return (
       <Box className={classes.root}>
         <PlayersBox
@@ -148,6 +155,29 @@ const Lobby = (props) => {
           question={lobby.questions[lobby.currentQuestionIndex]}
           answers={lobby.questions[lobby.currentQuestionIndex].answers}
         />
+      </Box>
+    );
+  } else {
+    return (
+      <Box className={classes.root}>
+        <PlayersBox
+          classes={classes}
+          playersAmountToStart={lobby.playersAmountToStart}
+          players={lobby.players}
+        />
+        <Box
+          className={classes.waitingPlayersBox}
+          elevation={7}
+          component={Paper}
+        >
+          <Typography
+            className={classes.nullOrWaitLobby}
+            variant="h6"
+            align="center"
+          >
+            Игра окончена
+          </Typography>
+        </Box>
       </Box>
     );
   }
