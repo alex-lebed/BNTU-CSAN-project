@@ -5,23 +5,22 @@ import Colors from "../Colors";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { getTotalQuestionsAmount } from "../store/Actions";
+import { getTotalQuestionsAmount, createLobby } from "../store/Actions";
+import { history } from "../helpers";
 
 const useStyles = makeStyles({
   root: {
     width: "22%",
-    height: 350,
+    minWidth: 250,
+    height: 400,
     margin: "150px auto",
     position: "relative",
     fontFamily: '"Verdana"'
   },
   boxHeader: {
     width: "100%",
-    height: "15%",
-    backgroundColor: Colors.GREEN,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
+    height: "10%",
+    backgroundColor: Colors.GREEN
   },
   input: {
     display: "block",
@@ -45,7 +44,7 @@ const useStyles = makeStyles({
 });
 
 const LobbyCreator = props => {
-  const { totalQuestionsAmount, getTotalQuestionsAmount } = props;
+  const { totalQuestionsAmount, getTotalQuestionsAmount, createLobby } = props;
   const classes = useStyles();
   const [fields, setFields] = useState({
     playersAmount: "",
@@ -54,7 +53,8 @@ const LobbyCreator = props => {
   });
   const [errors, setErrors] = useState({
     playersAmount: false,
-    questionsAmount: false
+    questionsAmount: false,
+    password: false
   });
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const LobbyCreator = props => {
     } else {
       setErrors(prev => ({
         ...prev,
-        [name]: false
+        [name]: true
       }));
     }
   }
@@ -102,10 +102,22 @@ const LobbyCreator = props => {
     }));
   }
 
+  function submitForm() {
+    if(errors.playersAmount || errors.questionsAmount || errors.password) return;
+    if(fields.playersAmount === "" || fields.questionsAmount === "" || fields.password === "") return;
+    createLobby({
+      admin: { login: "admin", password: "admin", name: "admin"},
+      password: fields.password,
+      playersAmountToStart: fields.playersAmount,
+      questionsAmount: fields.questionsAmount
+    });
+    history.push("/");
+  }
+
   return (
     <Box elevation={7} className={classes.root} component={Paper}>
       <Box className={classes.boxHeader} component={Paper}>
-        <Typography color="initial" variant="h6">
+        <Typography color="initial" variant="h6" align="center">
           Создание лобби
         </Typography>
       </Box>
@@ -148,12 +160,22 @@ const LobbyCreator = props => {
         variant="outlined"
         label="Пароль"
         name="password"
+        error={errors.password}
         onChange={handleChange}
         fullWidth
+        helperText={
+          errors.password
+            ? "Введите пароль"
+            : ""
+        }
         size="small"
         value={fields.password}
       />
-      <Button className={classes.button} variant="contained">
+      <Button
+        className={classes.button}
+        variant="contained"
+        onClick={() => submitForm()}
+      >
         Создать
       </Button>
     </Box>
@@ -162,7 +184,8 @@ const LobbyCreator = props => {
 
 LobbyCreator.propTypes = {
   totalQuestionsAmount: PropTypes.number.isRequired,
-  getTotalQuestionsAmount: PropTypes.func.isRequired
+  getTotalQuestionsAmount: PropTypes.func.isRequired,
+  createLobby: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -170,7 +193,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ getTotalQuestionsAmount }, dispatch);
+  return bindActionCreators({ getTotalQuestionsAmount, createLobby }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LobbyCreator);
