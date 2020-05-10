@@ -1,7 +1,6 @@
 package by.bntu.fitr.isats.quiz.dto;
 
 import by.bntu.fitr.isats.quiz.entity.game.GameStatus;
-import by.bntu.fitr.isats.quiz.entity.user.Winner;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +19,5 @@ public class LobbyDto {
     private List<QuestionDto> questions;
     private int currentQuestionIndex;
     private GameStatus status;
-    private List<PlayerDto> winners;
 
 }

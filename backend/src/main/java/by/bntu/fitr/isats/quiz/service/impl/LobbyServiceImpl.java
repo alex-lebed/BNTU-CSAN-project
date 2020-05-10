@@ -6,6 +6,7 @@ import by.bntu.fitr.isats.quiz.dao.api.WinnerDao;
 import by.bntu.fitr.isats.quiz.dto.LobbyConfigDto;
 import by.bntu.fitr.isats.quiz.dto.LobbyDto;
 import by.bntu.fitr.isats.quiz.dto.PlayerConnectDto;
+import by.bntu.fitr.isats.quiz.dto.PlayerDto;
 import by.bntu.fitr.isats.quiz.entity.user.Admin;
 import by.bntu.fitr.isats.quiz.entity.game.GameStatus;
 import by.bntu.fitr.isats.quiz.entity.game.Lobby;
@@ -66,8 +67,8 @@ public class LobbyServiceImpl implements LobbyService {
             if (!lobbyPassword.equals(submittedPassword)) {
                 throw new ServiceException(
                         "Invalid password: " + submittedPassword +
-                        ", player name: " + dto.getName() +
-                        ", lobby id: " + lobby.getId()
+                                ", player name: " + dto.getName() +
+                                ", lobby id: " + lobby.getId()
                 );
             }
 
@@ -109,7 +110,7 @@ public class LobbyServiceImpl implements LobbyService {
                 lobby.setCurrentQuestionIndex(questionIndex + 1);
             }
 
-            return mapper.map(lobby, LobbyDto.class);
+            return mapToLobbyDto(lobby);
         }
     }
 
@@ -173,7 +174,7 @@ public class LobbyServiceImpl implements LobbyService {
                 .max()
                 .getAsInt();
 
-        return  players.stream()
+        return players.stream()
                 .filter(p -> p.getScore() == maxScore)
                 .map(this::mapToWinner)
                 .collect(Collectors.toList());
@@ -182,6 +183,26 @@ public class LobbyServiceImpl implements LobbyService {
     private Winner mapToWinner(Player player) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return new Winner(player.getId(), player.getName(), timestamp, player.getScore());
+    }
+
+    private LobbyDto mapToLobbyDto(Lobby lobby) {
+        LobbyDto dto = mapper.map(lobby, LobbyDto.class);
+        if (lobby.getStatus() == GameStatus.FINISHED) {
+            setWinnersToDto(dto, lobby.getWinners());
+        }
+        return dto;
+    }
+
+    private void setWinnersToDto(LobbyDto dto, List<Winner> winners) {
+        dto.getPlayers()
+                .stream()
+                .filter(playerDto -> winners.stream()
+                        .anyMatch(winner -> isSamePerson(playerDto, winner)))
+                .forEach(p -> p.setWinner(true));
+    }
+
+    private boolean isSamePerson(PlayerDto player, Winner winner) {
+        return player.getId().equals(winner.getId());
     }
 
     private boolean isLast(int questionIndex, Lobby lobby) {

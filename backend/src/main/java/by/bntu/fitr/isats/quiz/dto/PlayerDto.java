@@ -12,5 +12,6 @@ public class PlayerDto {
     private Integer id;
     private String name;
     private int score;
+    private boolean winner;
 
 }
