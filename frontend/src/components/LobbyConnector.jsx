@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Paper, TextField, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import Colors from "../Colors";
@@ -11,6 +11,7 @@ import { history } from "../helpers";
 const useStyles = makeStyles({
   root: {
     width: "22%",
+    minWidth: 220,
     height: 350,
     margin: "150px auto",
     position: "relative",
@@ -18,11 +19,8 @@ const useStyles = makeStyles({
   },
   boxHeader: {
     width: "100%",
-    height: "15%",
-    backgroundColor: Colors.GREEN,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    height: "10%",
+    backgroundColor: Colors.GREEN
   },
   input: {
     display: "block",
@@ -38,10 +36,10 @@ const useStyles = makeStyles({
     "&:hover": {
       backgroundColor: Colors.DARK_GREEN,
     },
-    width: "50%",
+    width: "60%",
     position: "absolute",
     bottom: 15,
-    right: "25%",
+    right: "20%",
   },
 });
 
@@ -56,8 +54,6 @@ const LobbyConnector = (props) => {
     password: false,
     connection: false,
   });
-
-  useEffect(() => {});
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -85,7 +81,7 @@ const LobbyConnector = (props) => {
   return (
     <Box elevation={7} className={classes.root} component={Paper}>
       <Box className={classes.boxHeader} component={Paper}>
-        <Typography color="initial" variant="h6">
+        <Typography color="initial" variant="h6" align="center">
           Подключение к лобби
         </Typography>
       </Box>
