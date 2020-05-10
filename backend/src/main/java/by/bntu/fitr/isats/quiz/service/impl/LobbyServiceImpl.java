@@ -174,15 +174,15 @@ public class LobbyServiceImpl implements LobbyService {
                 .max()
                 .getAsInt();
 
+        Timestamp gameDate = new Timestamp(System.currentTimeMillis());
         return players.stream()
                 .filter(p -> p.getScore() == maxScore)
-                .map(this::mapToWinner)
+                .map(p -> mapToWinner(p, gameDate))
                 .collect(Collectors.toList());
     }
 
-    private Winner mapToWinner(Player player) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        return new Winner(player.getId(), player.getName(), timestamp, player.getScore());
+    private Winner mapToWinner(Player player, Timestamp gameDate) {
+        return new Winner(player.getId(), player.getName(), gameDate, player.getScore());
     }
 
     private LobbyDto mapToLobbyDto(Lobby lobby) {
