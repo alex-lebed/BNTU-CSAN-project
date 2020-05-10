@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
-import { getWinners } from "../store/Actions";
+import { getLeaders } from "../store/Actions";
 
 const useStyles = makeStyles({
   tableContainer: {
@@ -22,12 +22,12 @@ const useStyles = makeStyles({
   },
 });
 
-const WinnersTable = (props) => {
+const LeadersTable = (props) => {
   const classes = useStyles();
-  const { winners, getWinners } = props;
+  const { leaders, getLeaders } = props;
 
   useEffect(() => {
-    getWinners();
+    getLeaders();
   });
 
   return (
@@ -44,12 +44,12 @@ const WinnersTable = (props) => {
           <TableCell key="score">Очки</TableCell>
         </TableHead>
         <TableBody>
-          {winners.map((winner, index) => (
-            <TableRow key={winner.id}>
+          {leaders.map((leader, index) => (
+            <TableRow key={leader.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{winner.name}</TableCell>
-              <TableCell>{winner.gamesWon}</TableCell>
-              <TableCell>{winner.score}</TableCell>
+              <TableCell>{leader.name}</TableCell>
+              <TableCell>{leader.gamesWon}</TableCell>
+              <TableCell>{leader.score}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -58,16 +58,16 @@ const WinnersTable = (props) => {
   );
 };
 
-WinnersTable.propTypes = {
-  winners: PropTypes.array.isRequired,
+LeadersTable.propTypes = {
+  leaders: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  winners: state.winners,
+  leaders: state.leaders,
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getWinners }, dispatch);
+  return bindActionCreators({ getLeaders }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WinnersTable);
+export default connect(mapStateToProps, mapDispatchToProps)(LeadersTable);
