@@ -10,6 +10,6 @@ import lombok.Setter;
 public class AnswerDto {
 
     private String text;
-    private boolean valid;
+    private boolean correct;
 
 }
