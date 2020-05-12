@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Box, Typography, Paper } from "@material-ui/core";
+import { Box, Typography, Paper, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PlayersBox from "./PlayersBox";
 import QuizBox from "./QuizBox";
 import Colors from "../../Colors";
+import { history } from "../../helpers";
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles({
     width: "100%",
     height: "30%",
     display: "flex",
+    marginTop: 10,
     justifyContent: "space-between",
   },
   quizBox: {
@@ -84,12 +86,12 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
   winnerBorder: {
-    border: "4px solid " + Colors.GREEN
+    border: "4px solid " + Colors.GREEN,
   },
   avatar: {
     margin: "3% 15%",
     height: "70%",
-    width: "70%"
+    width: "70%",
   },
   nullOrWaitLobby: {
     padding: 20,
@@ -98,6 +100,17 @@ const useStyles = makeStyles({
   waitingPlayersBox: {
     width: "50%",
     margin: "20% auto",
+  },
+  button: {
+    text: {
+      fontWeight: 600,
+    },
+    backgroundColor: Colors.GREEN,
+    "&:hover": {
+      backgroundColor: Colors.DARK_GREEN,
+    },
+    width: "40%",
+    margin: "5%",
   },
 });
 
@@ -177,6 +190,20 @@ const Lobby = (props) => {
           >
             Игра окончена
           </Typography>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={() => history.push("/")}
+          >
+            Главная
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={() => history.push("/leaders")}
+          >
+            Лидеры
+          </Button>
         </Box>
       </Box>
     );

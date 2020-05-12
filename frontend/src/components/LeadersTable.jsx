@@ -6,7 +6,7 @@ import {
   Table,
   TableHead,
   TableCell,
-  TableRow
+  TableRow,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
@@ -17,8 +17,11 @@ import { getLeaders } from "../store/Actions";
 const useStyles = makeStyles({
   tableContainer: {
     width: "25%",
-    minHeight: "50%",
-    margin: "10% auto",
+    minWidth: 300,
+    height: "50%",
+    minHeight: 330,
+    margin: "0 auto",
+    marginTop: 140
   },
 });
 
