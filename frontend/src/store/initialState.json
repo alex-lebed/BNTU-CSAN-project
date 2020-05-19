@@ -1,0 +1,8 @@
+{
+  "totalQuestionsAmount": 0,
+  "lobby": null,
+  "leaders": [],
+  "currentQuestionAnswered": false,
+  "currentPlayer": null,
+  "pressedAnswer": null
+}
