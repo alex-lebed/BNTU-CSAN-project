@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/quiz
+    username: foo
+    password: bar
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8082
+  servlet:
+    context-path: /quiz
